@@ -25,6 +25,16 @@ float neighborsum (NumericVector v1, NumericVector v2, float weight, int N){
 }
 
 
+float bernoulli (float p){
+  float r = ((float) rand() / (RAND_MAX));
+  unsigned int br = 0;
+  if (r >= p)
+    br = 1;
+  return br;
+}
+
+
+
 //' @export
 // [[Rcpp::export]]
 IntegerMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, float alpha0, float alpha1, int R, int N, NumericVector start) {
@@ -36,7 +46,7 @@ IntegerMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, float alp
     for (int i=0; i<N; i++) {
     float sum = neighborsum(vec,adj(i,_),weights(i),N);
     float prob = expit(alpha0 + alpha1*sum);
-    vec[i] = R::rbinom(1,prob);
+    vec[i] = bernoulli(prob);
     }
     mat(_,r) = vec ;
   }
