@@ -6,15 +6,15 @@
 using namespace Rcpp;
 
 // run_gibbSimple
-IntegerMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, float alpha0, float alpha1, int R, int N, NumericVector start);
+NumericMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, double alpha0, double alpha1, int R, int N, NumericVector start);
 RcppExport SEXP _gibbsMRF_run_gibbSimple(SEXP adjSEXP, SEXP weightsSEXP, SEXP alpha0SEXP, SEXP alpha1SEXP, SEXP RSEXP, SEXP NSEXP, SEXP startSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type adj(adjSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< float >::type alpha0(alpha0SEXP);
-    Rcpp::traits::input_parameter< float >::type alpha1(alpha1SEXP);
+    Rcpp::traits::input_parameter< double >::type alpha0(alpha0SEXP);
+    Rcpp::traits::input_parameter< double >::type alpha1(alpha1SEXP);
     Rcpp::traits::input_parameter< int >::type R(RSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
