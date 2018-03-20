@@ -3,19 +3,24 @@
 \docType{methods}
 \name{gibbSimple}
 \alias{gibbSimple}
-\alias{gibbSimple,matrix,vector,numeric-method}
+\alias{gibbSimple,matrix,vector,numeric,numeric,vector-method}
 \title{Execute the gibbs sampler for a simple case}
 \usage{
-gibbSimple(x, alpha, R)
+gibbSimple(x, alpha, N, R, weights)
 
-\S4method{gibbSimple}{matrix,vector,numeric}(x, alpha, R = 1000)
+\S4method{gibbSimple}{matrix,vector,numeric,numeric,vector}(x, alpha, N, R,
+  weights)
 }
 \arguments{
 \item{x}{adjacency matrix for network}
 
 \item{alpha}{parameters}
 
+\item{N}{number of nodes}
+
 \item{R}{number of iterations}
+
+\item{weights}{number of neighbors}
 }
 \description{
 \code{gibbSimple} creates multiple Markov Random Field realizations
@@ -26,7 +31,8 @@ to minimize the computing time.
 N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
+weights <- apply(x,1,sum)
 R <- 1000
-output <- gibbSimple(x, alpha, R)
+output <- gibbSimple(x, alpha, N, R, weights)
 
 }

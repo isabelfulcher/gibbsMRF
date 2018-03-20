@@ -46,7 +46,7 @@ IntegerMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, float alp
     for (int i=0; i<N; i++) {
     float sum = neighborsum(vec,adj(i,_),weights(i),N);
     float prob = expit(alpha0 + alpha1*sum);
-    vec[i] = bernoulli(prob);
+    vec[i] = R::rbinom(1,prob);
     }
     mat(_,r) = vec ;
   }
