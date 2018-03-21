@@ -23,7 +23,7 @@ NumericVector suffstats (NumericVector v1, NumericMatrix adj, NumericVector weig
 
   for (int i=0; i<N; i++) {
     sumvec[0] += v1[i];
-    sumvec[1] += neighborsum(v1,adj(_,i),weights(i),N);
+    sumvec[1] += v1[i]*neighborsum(v1,adj(_,i),weights(i),N);
   }
 
   return sumvec;
