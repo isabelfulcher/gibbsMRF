@@ -3,24 +3,29 @@
 \docType{methods}
 \name{gibbSimplestat}
 \alias{gibbSimplestat}
-\alias{gibbSimplestat,matrix,vector,numeric,numeric,vector-method}
+\alias{gibbSimplestat,vector,matrix,numeric,numeric,vector,numeric,numeric-method}
 \title{Execute the gibbs sampler and save sufficient statistics for a simple case}
 \usage{
-gibbSimplestat(x, alpha, N, R, weights)
+gibbSimplestat(alpha, x, N, R, weights, burnin, thin)
 
-\S4method{gibbSimplestat}{matrix,vector,numeric,numeric,vector}(x, alpha, N, R,
-  weights)
+
+  \S4method{gibbSimplestat}{vector,matrix,numeric,numeric,vector,numeric,numeric}(alpha,
+  x, N, R = 500, weights, burnin = 0, thin = 1)
 }
 \arguments{
-\item{x}{adjacency matrix for network}
+\item{alpha}{parameters}
 
-\item{alpha}{vector of alpha parameters}
+\item{x}{adjacency matrix for network}
 
 \item{N}{number of nodes}
 
-\item{R}{number of iterations}
+\item{R}{number of output iterations}
 
 \item{weights}{number of neighbors}
+
+\item{burnin}{cutoff value for burnin}
+
+\item{thin}{thinning value for chain}
 }
 \description{
 \code{gibbSimplestat} saves sufficient statistics
@@ -32,7 +37,6 @@ N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
 weights <- apply(x,1,sum)
-R <- 100
-output <- gibbSimplestat(x, alpha, N, R, weights)
+output <- gibbSimplestat(alpha, x, N, 100, weights, 10, 2)
 
 }

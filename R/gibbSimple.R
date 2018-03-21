@@ -7,11 +7,13 @@ NULL
 #' for one covariate model. This is done iteratively in \code{Rcpp}
 #' to minimize the computing time.
 #'
-#' @param x adjacency matrix for network
 #' @param alpha parameters
+#' @param x adjacency matrix for network
 #' @param N number of nodes
-#' @param R number of iterations
+#' @param R number of output iterations
 #' @param weights number of neighbors
+#' @param burnin cutoff value for burnin
+#' @param thin thinning value for chain
 #'
 #' @importFrom stats rbinom runif
 #'
@@ -20,22 +22,22 @@ NULL
 #' x <- matrix(rbinom(N*N,1,0.1),N,N)
 #' alpha <- c(.2,.5)
 #' weights <- apply(x,1,sum)
-#' R <- 100
-#' output <- gibbSimple(x, alpha, N, R, weights)
+#' output <- gibbSimple(alpha, x, N, 100, weights, 10, 2)
 #'
 #' @export
-setGeneric(name = "gibbSimple", def = function(x, alpha, N, R, weights)
+setGeneric(name = "gibbSimple", def = function(alpha, x, N, R, weights, burnin, thin)
   standardGeneric("gibbSimple"))
 
 #' @rdname gibbSimple
-setMethod("gibbSimple", signature(x="matrix", alpha="vector", N="numeric", R="numeric", weights="vector"),
-          definition = function(x, alpha, N, R, weights) {
+setMethod("gibbSimple", signature(alpha="vector", x="matrix", N="numeric", R="numeric", weights="vector", burnin="numeric", thin="numeric"),
+          definition = function(alpha, x, N, R=500, weights, burnin=0, thin=1) {
 
             stopifnot(dim(alpha) == 2)
             stopifnot(ncol(x) == nrow(x))
 
             start <- rbinom(N,1,runif(1,0,1)) #initialize starting vector
-            mrfout <- run_gibbSimple(x, weights, alpha[1], alpha[2], R, N, start)
+            mrf <- run_gibbSimple(x, weights, alpha[1], alpha[2], (R+burnin)*thin, N, start)
+            mrfout <- mrf[,(burnin+1):(R+burnin)][,seq(1,R,by=thin)]
 
             return(mrfout)
 

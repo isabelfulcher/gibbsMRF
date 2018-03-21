@@ -3,24 +3,29 @@
 \docType{methods}
 \name{gibbSimple}
 \alias{gibbSimple}
-\alias{gibbSimple,matrix,vector,numeric,numeric,vector-method}
+\alias{gibbSimple,vector,matrix,numeric,numeric,vector,numeric,numeric-method}
 \title{Execute the gibbs sampler for a simple case}
 \usage{
-gibbSimple(x, alpha, N, R, weights)
+gibbSimple(alpha, x, N, R, weights, burnin, thin)
 
-\S4method{gibbSimple}{matrix,vector,numeric,numeric,vector}(x, alpha, N, R,
-  weights)
+
+  \S4method{gibbSimple}{vector,matrix,numeric,numeric,vector,numeric,numeric}(alpha,
+  x, N, R = 500, weights, burnin = 0, thin = 1)
 }
 \arguments{
-\item{x}{adjacency matrix for network}
-
 \item{alpha}{parameters}
+
+\item{x}{adjacency matrix for network}
 
 \item{N}{number of nodes}
 
-\item{R}{number of iterations}
+\item{R}{number of output iterations}
 
 \item{weights}{number of neighbors}
+
+\item{burnin}{cutoff value for burnin}
+
+\item{thin}{thinning value for chain}
 }
 \description{
 \code{gibbSimple} creates multiple Markov Random Field realizations
@@ -32,7 +37,6 @@ N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
 weights <- apply(x,1,sum)
-R <- 100
-output <- gibbSimple(x, alpha, N, R, weights)
+output <- gibbSimple(alpha, x, N, 100, weights, 10, 2)
 
 }

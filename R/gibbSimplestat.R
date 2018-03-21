@@ -7,11 +7,13 @@ NULL
 #' for a Markov Random Field model. This is done
 #' iteratively in \code{Rcpp} to minimize the computing time.
 #'
+#' @param alpha parameters
 #' @param x adjacency matrix for network
-#' @param alpha vector of alpha parameters
 #' @param N number of nodes
-#' @param R number of iterations
+#' @param R number of output iterations
 #' @param weights number of neighbors
+#' @param burnin cutoff value for burnin
+#' @param thin thinning value for chain
 #'
 #' @importFrom stats rbinom runif
 #'
@@ -20,22 +22,22 @@ NULL
 #' x <- matrix(rbinom(N*N,1,0.1),N,N)
 #' alpha <- c(.2,.5)
 #' weights <- apply(x,1,sum)
-#' R <- 100
-#' output <- gibbSimplestat(x, alpha, N, R, weights)
+#' output <- gibbSimplestat(alpha, x, N, 100, weights, 10, 2)
 #'
 #' @export
-setGeneric(name = "gibbSimplestat", def = function(x, alpha, N, R, weights)
+setGeneric(name = "gibbSimplestat", def = function(alpha, x, N, R, weights, burnin, thin)
   standardGeneric("gibbSimplestat"))
 
 #' @rdname gibbSimplestat
-setMethod("gibbSimplestat", signature(x="matrix", alpha="vector", N="numeric", R="numeric", weights="vector"),
-          definition = function(x, alpha, N, R, weights) {
+setMethod("gibbSimplestat", signature(alpha="vector", x="matrix", N="numeric", R="numeric", weights="vector", burnin="numeric", thin="numeric"),
+          definition = function(alpha, x, N, R=500, weights, burnin=0, thin=1) {
 
             stopifnot(dim(alpha) == 2)
             stopifnot(ncol(x) == nrow(x))
 
             start <- rbinom(N,1,runif(1,0,1)) #initialize starting vector
-            statout <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], R, N, start)
+            stat <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], (R+burnin)*thin, N, start)
+            statout <- stat[,(burnin+1):(R+burnin)][,seq(1,R,by=thin)]
 
             return(t(statout))
 
