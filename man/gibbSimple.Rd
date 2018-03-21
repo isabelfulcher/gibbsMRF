@@ -32,7 +32,7 @@ N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
 weights <- apply(x,1,sum)
-R <- 1000
+R <- 100
 output <- gibbSimple(x, alpha, N, R, weights)
 
 }
