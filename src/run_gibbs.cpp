@@ -20,8 +20,8 @@ NumericVector suffstats (NumericVector v1, NumericMatrix adj, int N){
   NumericVector sumvec(2);
 
   for (int i=0; i<N; i++) {
-    sumvec[1] += v1[i];
-    sumvec[2] += neighborsum(v1,adj(_,i),N);
+    sumvec[0] += v1[i];
+    sumvec[1] += neighborsum(v1,adj(_,i),N);
   }
 
   return sumvec;
