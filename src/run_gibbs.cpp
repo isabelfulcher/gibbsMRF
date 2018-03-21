@@ -3,7 +3,7 @@
 using namespace Rcpp;
 
 
-double neighborsum (NumericVector v1, NumericVector v2, int N){
+double neighborsum (NumericVector v1, NumericVector v2, double weight, int N){
 
   double sum = 0;
 
@@ -11,17 +11,19 @@ double neighborsum (NumericVector v1, NumericVector v2, int N){
     sum += (v1[i]*v2[i]);
   }
 
-  return sum;
+  double scaled = sum/weight;
+
+  return scaled;
 
 }
 
-NumericVector suffstats (NumericVector v1, NumericMatrix adj, int N){
+NumericVector suffstats (NumericVector v1, NumericMatrix adj, NumericVector weights, int N){
 
   NumericVector sumvec(2);
 
   for (int i=0; i<N; i++) {
     sumvec[0] += v1[i];
-    sumvec[1] += neighborsum(v1,adj(_,i),N);
+    sumvec[1] += neighborsum(v1,adj(_,i),weights(i),N);
   }
 
   return sumvec;
@@ -38,7 +40,7 @@ NumericMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, double al
 
   for (int r=0; r<R; r++) {
     for (int i=0; i<N; i++) {
-    double sum = neighborsum(vec,adj(_,i),N)/weights(i);
+    double sum = neighborsum(vec,adj(_,i),weights(i),N);
     double prob = R::plogis(alpha0 + alpha1*sum,0,1,1,0);
     vec[i] = R::rbinom(1,prob);
     }
@@ -56,11 +58,11 @@ NumericMatrix run_gibbSimplestat(NumericMatrix adj, NumericVector weights, doubl
 
   for (int r=0; r<R; r++) {
     for (int i=0; i<N; i++) {
-      double sum = neighborsum(vec,adj(_,i),N)/weights(i);
+      double sum = neighborsum(vec,adj(_,i),weights(i),N);
       double prob = R::plogis(alpha0 + alpha1*sum,0,1,1,0);
       vec[i] = R::rbinom(1,prob);
     }
-    mat(_,r) = suffstats(vec,adj,N) ;
+    mat(_,r) = suffstats(vec,adj,weights,N) ;
   }
   return mat;
 }

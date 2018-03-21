@@ -37,6 +37,6 @@ setMethod("gibbSimplestat", signature(x="matrix", alpha="vector", N="numeric", R
             start <- rbinom(N,1,runif(1,0,1)) #initialize starting vector
             statout <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], R, N, start)
 
-            return(statout)
+            return(t(statout))
 
           })
