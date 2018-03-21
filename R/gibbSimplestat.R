@@ -36,8 +36,9 @@ setMethod("gibbSimplestat", signature(alpha="vector", x="matrix", N="numeric", R
             stopifnot(ncol(x) == nrow(x))
 
             start <- rbinom(N,1,runif(1,0,1)) #initialize starting vector
-            stat <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], (R+burnin)*thin, N, start)
-            statout <- stat[,(burnin+1):(R+burnin)][,seq(1,R,by=thin)]
+            iter <- R*thin + burnin
+            stat <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], iter, N, start)
+            statout <- stat[,(burnin+1):iter][,seq(1,R*thin,by=thin)]
 
             return(t(statout))
 
