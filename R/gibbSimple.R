@@ -38,7 +38,7 @@ setMethod("gibbSimple", signature(alpha="vector", x="matrix", N="numeric", R="nu
 
             iter <- R*thin + burnin
             mrf <- run_gibbSimple(x, weights, alpha[1], alpha[2], iter, N, start)
-            mrfout <- mrf[,(burnin+1):iter][,seq(1,R*thin,by=thin)]
+            if (iter==1){ mrfout <- mrf} else { mrfout <- mrf[,(burnin+1):iter][,seq(1,R*thin,by=thin)]}
 
             return(mrfout)
 

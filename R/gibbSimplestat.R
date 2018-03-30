@@ -38,7 +38,7 @@ setMethod("gibbSimplestat", signature(alpha="vector", x="matrix", N="numeric", R
 
             iter <- R*thin + burnin
             stat <- run_gibbSimplestat(x, weights, alpha[1], alpha[2], iter, N, start)
-            statout <- stat[,(burnin+1):iter][,seq(1,R*thin,by=thin)]
+            if (iter==1){ statout <- stat} else { statout <- stat[,(burnin+1):iter][,seq(1,R*thin,by=thin)]}
 
             return(t(statout))
 
