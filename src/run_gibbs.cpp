@@ -51,6 +51,22 @@ NumericMatrix run_gibbSimple(NumericMatrix adj, NumericVector weights, double al
 
 //' @export
 // [[Rcpp::export]]
+NumericVector run_gibbSimple1(NumericMatrix adj, NumericVector weights, double alpha0, double alpha1, int R, int N, NumericVector start) {
+
+  NumericVector vec = start;
+
+  for (int r=0; r<R; r++) {
+    for (int i=0; i<N; i++) {
+      double sum = neighborsum(vec,adj(_,i),weights(i),N);
+      double prob = R::plogis(alpha0 + alpha1*sum,0,1,1,0);
+      vec[i] = R::rbinom(1,prob);
+    }
+  }
+  return vec;
+}
+
+//' @export
+// [[Rcpp::export]]
 NumericMatrix run_gibbSimplestat(NumericMatrix adj, NumericVector weights, double alpha0, double alpha1, int R, int N, NumericVector start) {
 
   NumericMatrix mat(2,R);
@@ -65,5 +81,23 @@ NumericMatrix run_gibbSimplestat(NumericMatrix adj, NumericVector weights, doubl
     mat(_,r) = suffstats(vec,adj,weights,N) ;
   }
   return mat;
+}
+
+//' @export
+// [[Rcpp::export]]
+NumericVector run_gibbSimplestat1(NumericMatrix adj, NumericVector weights, double alpha0, double alpha1, int R, int N, NumericVector start) {
+
+  NumericVector vec = start;
+  NumericVector sumvec(2);
+
+  for (int r=0; r<R; r++) {
+    for (int i=0; i<N; i++) {
+      double sum = neighborsum(vec,adj(_,i),weights(i),N);
+      double prob = R::plogis(alpha0 + alpha1*sum,0,1,1,0);
+      vec[i] = R::rbinom(1,prob);
+    }
+  }
+  sumvec = suffstats(vec,adj,weights,N);
+  return sumvec;
 }
 

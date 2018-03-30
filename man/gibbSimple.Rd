@@ -3,14 +3,14 @@
 \docType{methods}
 \name{gibbSimple}
 \alias{gibbSimple}
-\alias{gibbSimple,vector,matrix,numeric,numeric,vector,numeric,numeric,vector-method}
+\alias{gibbSimple,vector,matrix,numeric,numeric,numeric,vector,vector-method}
 \title{Execute the gibbs sampler for a simple case}
 \usage{
-gibbSimple(alpha, x, N, R, weights, burnin, thin, start)
+gibbSimple(alpha, x, N, R, burnin, weights, start)
 
 
-  \S4method{gibbSimple}{vector,matrix,numeric,numeric,vector,numeric,numeric,vector}(alpha,
-  x, N, R = 500, weights, burnin = 0, thin = 1, start)
+  \S4method{gibbSimple}{vector,matrix,numeric,numeric,numeric,vector,vector}(alpha,
+  x, N, R = 500, burnin = 0, weights, start)
 }
 \arguments{
 \item{alpha}{parameters}
@@ -21,11 +21,9 @@ gibbSimple(alpha, x, N, R, weights, burnin, thin, start)
 
 \item{R}{number of output iterations}
 
+\item{burnin}{burnin}
+
 \item{weights}{number of neighbors}
-
-\item{burnin}{cutoff value for burnin}
-
-\item{thin}{thinning value for chain}
 
 \item{start}{vector of starting values}
 }
@@ -39,6 +37,6 @@ N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
 weights <- apply(x,1,sum)
-output <- gibbSimple(alpha, x, N, 100, weights, 10, 2, rbinom(N,1,runif(1,0,1)))
+output <- gibbSimple(alpha, x, N, 100, 10, weights, rbinom(N,1,runif(1,0,1)))
 
 }

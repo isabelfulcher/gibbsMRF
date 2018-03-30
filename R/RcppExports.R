@@ -7,7 +7,17 @@ run_gibbSimple <- function(adj, weights, alpha0, alpha1, R, N, start) {
 }
 
 #' @export
+run_gibbSimple1 <- function(adj, weights, alpha0, alpha1, R, N, start) {
+    .Call('_gibbsMRF_run_gibbSimple1', PACKAGE = 'gibbsMRF', adj, weights, alpha0, alpha1, R, N, start)
+}
+
+#' @export
 run_gibbSimplestat <- function(adj, weights, alpha0, alpha1, R, N, start) {
     .Call('_gibbsMRF_run_gibbSimplestat', PACKAGE = 'gibbsMRF', adj, weights, alpha0, alpha1, R, N, start)
+}
+
+#' @export
+run_gibbSimplestat1 <- function(adj, weights, alpha0, alpha1, R, N, start) {
+    .Call('_gibbsMRF_run_gibbSimplestat1', PACKAGE = 'gibbsMRF', adj, weights, alpha0, alpha1, R, N, start)
 }
 
