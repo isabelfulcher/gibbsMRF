@@ -3,14 +3,14 @@
 \docType{methods}
 \name{gibbSimplestat}
 \alias{gibbSimplestat}
-\alias{gibbSimplestat,vector,matrix,numeric,numeric,vector,numeric,numeric-method}
+\alias{gibbSimplestat,vector,matrix,numeric,numeric,vector,numeric,numeric,vector-method}
 \title{Execute the gibbs sampler and save sufficient statistics for a simple case}
 \usage{
-gibbSimplestat(alpha, x, N, R, weights, burnin, thin)
+gibbSimplestat(alpha, x, N, R, weights, burnin, thin, start)
 
 
-  \S4method{gibbSimplestat}{vector,matrix,numeric,numeric,vector,numeric,numeric}(alpha,
-  x, N, R = 500, weights, burnin = 0, thin = 1)
+  \S4method{gibbSimplestat}{vector,matrix,numeric,numeric,vector,numeric,numeric,vector}(alpha,
+  x, N, R = 500, weights, burnin = 0, thin = 1, start)
 }
 \arguments{
 \item{alpha}{parameters}
@@ -26,6 +26,8 @@ gibbSimplestat(alpha, x, N, R, weights, burnin, thin)
 \item{burnin}{cutoff value for burnin}
 
 \item{thin}{thinning value for chain}
+
+\item{start}{vector of starting values}
 }
 \description{
 \code{gibbSimplestat} saves sufficient statistics
@@ -37,6 +39,6 @@ N <- 100
 x <- matrix(rbinom(N*N,1,0.1),N,N)
 alpha <- c(.2,.5)
 weights <- apply(x,1,sum)
-output <- gibbSimplestat(alpha, x, N, 100, weights, 10, 2)
+output <- gibbSimplestat(alpha, x, N, 100, weights, 10, 2, rbinom(N,1,runif(1,0,1)))
 
 }
